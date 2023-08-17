@@ -70,13 +70,15 @@ app.post("/login", async (req, res) => {
 
       if (passwordMatch) {
         const token = jwt.sign(
-          { user_id: user._id, username },
+          { userId: user._id, username: user.username, role: user.role },
           process.env.TOKEN_KEY,
           {
-            expiresIn: "2h",
+            expiresIn: "1m",
           }
         );
-        res.status(200).json({ message: "Login successful", token: token });
+        res
+          .status(200)
+          .json({ message: "Login successful", token: token, role: user.role });
       } else {
         res.status(401).json({ error: "Invalid username or password" });
       }
@@ -88,6 +90,16 @@ app.post("/login", async (req, res) => {
     res
       .status(500)
       .json({ error: "An error occurred during login in backend" });
+  }
+});
+
+app.get("/admin/users", async (req, res) => {
+  try {
+    const users = await User.find();
+    res.status(200).json(users);
+  } catch (error) {
+    console.error("Error fetching users:", error);
+    res.status(500).json({ error: "An error occurred while fetching users" });
   }
 });
 
