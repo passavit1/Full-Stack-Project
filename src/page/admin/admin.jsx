@@ -40,7 +40,7 @@ const AdminPanel = () => {
   return (
     <div>
       <h1>Admin Panel</h1>
-      <UserList users={users} />
+      <UserList users={users} fetchUsers={fetchUsers} />
     </div>
   );
 };

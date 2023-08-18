@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Table, Button, Modal, Form } from "react-bootstrap";
 import axios from "axios";
 
-const UserList = ({ users, updateUser }) => {
+const UserList = ({ users, fetchUsers }) => {
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [updatedName, setUpdatedName] = useState("");
@@ -31,6 +31,8 @@ const UserList = ({ users, updateUser }) => {
         setUpdatedName("");
         setUpdatedEmail("");
         // You may want to fetch updated user list after successful update
+
+        fetchUsers();
       } catch (error) {
         console.error("Error updating user:", error);
       }

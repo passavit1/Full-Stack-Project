@@ -5,7 +5,6 @@ const express = require("express");
 const User = require("./model/user");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const auth = require("./middleware/auth");
 const cors = require("cors");
 
 const app = express();
@@ -73,7 +72,7 @@ app.post("/login", async (req, res) => {
           { userId: user._id, username: user.username, role: user.role },
           process.env.TOKEN_KEY,
           {
-            expiresIn: "1m",
+            expiresIn: "1h",
           }
         );
         res
