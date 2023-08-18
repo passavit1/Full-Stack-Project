@@ -93,6 +93,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
+// Fetch data for admin account
 app.get("/admin/users", async (req, res) => {
   try {
     const users = await User.find();
@@ -100,6 +101,29 @@ app.get("/admin/users", async (req, res) => {
   } catch (error) {
     console.error("Error fetching users:", error);
     res.status(500).json({ error: "An error occurred while fetching users" });
+  }
+});
+
+// Api edit user for admin
+app.put("/updateUser/:id", async (req, res) => {
+  const userId = req.params.id;
+  const { name, email } = req.body;
+
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: { name, email } },
+      { new: true }
+    );
+
+    if (updatedUser) {
+      res.status(200).json(updatedUser);
+    } else {
+      res.status(404).json({ error: "User not found" });
+    }
+  } catch (error) {
+    console.error("Error updating user:", error);
+    res.status(500).json({ error: "An error occurred while updating user" });
   }
 });
 
