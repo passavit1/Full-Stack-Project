@@ -4,5 +4,14 @@ import Test from "./test.jsx";
 import AdminPanel from "./admin/admin.jsx";
 import UserPage from "./userPage/userPage.jsx";
 import CreateProduct from "./product/createProduct.jsx";
+import ProductList from "./product/ProductList.jsx";
 
-export { Login, Register, Test, AdminPanel, UserPage, CreateProduct };
+export {
+  Login,
+  Register,
+  Test,
+  AdminPanel,
+  UserPage,
+  CreateProduct,
+  ProductList,
+};

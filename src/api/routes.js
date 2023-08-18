@@ -160,6 +160,29 @@ prod.get("/list", async (req, res) => {
   }
 });
 
+// Edit Product
+prod.put("/edit/:id", async (req, res) => {
+  const productId = req.params.id;
+  const { name, price, image } = req.body;
+
+  try {
+    const updatedProduct = await Product.findByIdAndUpdate(
+      productId,
+      { $set: { name, price, image } },
+      { new: true }
+    );
+
+    if (updatedProduct) {
+      res.status(200).json(updatedProduct);
+    } else {
+      res.status(404).json({ error: "Product not found" });
+    }
+  } catch (error) {
+    console.error("Error updating product:", error);
+    res.status(500).json({ error: "An error occurred while updating product" });
+  }
+});
+
 app.use("/product", prod);
 
 module.exports = app;

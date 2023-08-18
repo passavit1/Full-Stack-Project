@@ -1,7 +1,7 @@
 // AdminPanel.js
 import React, { useEffect } from "react";
 import UserList from "./userList";
-import { CreateProduct } from "../index";
+import { CreateProduct, ProductList } from "../index";
 import { useNavigate } from "react-router-dom";
 import { Tab, Tabs } from "react-bootstrap";
 import jwt_decode from "jwt-decode";
@@ -38,6 +38,7 @@ const AdminPanel = () => {
         </Tab>
         <Tab eventKey="products" title="Product Page">
           <CreateProduct />
+          <ProductList />
         </Tab>
       </Tabs>
     </div>
