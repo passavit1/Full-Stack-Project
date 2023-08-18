@@ -1,6 +1,5 @@
 // AdminPanel.js
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useEffect } from "react";
 import UserList from "./userList";
 import { CreateProduct } from "../index";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +7,6 @@ import { Tab, Tabs } from "react-bootstrap";
 import jwt_decode from "jwt-decode";
 
 const AdminPanel = () => {
-  const [users, setUsers] = useState([]);
   const navigate = useNavigate();
 
   // Set token to local storage
@@ -23,7 +21,7 @@ const AdminPanel = () => {
 
       // Check if the user's role is "admin"
       if (decodedToken.role === "admin") {
-        fetchUsers();
+        navigate("/admin");
       } else {
         // Redirect to a non-admin page
         navigate("/user");
@@ -31,21 +29,12 @@ const AdminPanel = () => {
     }
   }, [navigate]);
 
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/admin/users");
-      setUsers(response.data);
-    } catch (error) {
-      console.error("Error fetching users:", error);
-    }
-  };
-
   return (
     <div>
       <h1>Admin Panel</h1>
       <Tabs defaultActiveKey="users">
         <Tab eventKey="users" title="User List">
-          <UserList users={users} fetchUsers={fetchUsers} />
+          <UserList />
         </Tab>
         <Tab eventKey="products" title="Product Page">
           <CreateProduct />

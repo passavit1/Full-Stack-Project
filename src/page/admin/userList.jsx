@@ -1,12 +1,28 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Table, Button, Modal, Form } from "react-bootstrap";
 import axios from "axios";
 
-const UserList = ({ users, fetchUsers }) => {
+const UserList = () => {
   const [showModal, setShowModal] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [updatedName, setUpdatedName] = useState("");
   const [updatedEmail, setUpdatedEmail] = useState("");
+  const [users, setUsers] = useState([]);
+
+  // Fetch users the first time
+  useEffect(() => {
+    fetchUsers();
+  }, []);
+
+  // function fetch user information from server
+  const fetchUsers = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/admin/users");
+      setUsers(response.data);
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
 
   const handleEditClick = (user) => {
     setSelectedUser(user);
