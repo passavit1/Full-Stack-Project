@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { Login, Register, Test, AdminPanel } from "./page/index";
+import { Login, Register, Test, AdminPanel, UserPage } from "./page/index";
 
 function App() {
   const [isLoginPage, setIsLoginPage] = useState(true);
@@ -36,6 +36,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/user" element={<UserPage />} />
         <Route path="/test" element={<Test />} />
       </Routes>
     </BrowserRouter>

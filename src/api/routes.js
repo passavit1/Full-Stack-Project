@@ -3,11 +3,16 @@ require("./db/database").connect();
 
 const express = require("express");
 const User = require("./model/user");
+const Product = require("./model/product");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const cors = require("cors");
 
+// user
 const app = express();
+// product
+const prod = express.Router();
+
 app.use(express.json());
 app.use(cors());
 
@@ -125,5 +130,36 @@ app.put("/updateUser/:id", async (req, res) => {
     res.status(500).json({ error: "An error occurred while updating user" });
   }
 });
+
+// create Product
+prod.post("/create", async (req, res) => {
+  const { name, price, image } = req.body;
+
+  try {
+    const newProduct = new Product({ name, price, image }); // Use the Product model
+    const savedProduct = await newProduct.save();
+    res.status(201).json(savedProduct);
+  } catch (error) {
+    console.error("Error creating product:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while creating the product" });
+  }
+});
+
+// Fetch All product
+prod.get("/list", async (req, res) => {
+  try {
+    const productList = await Product.find(); // Use the Product model to find all products
+    res.status(200).json(productList);
+  } catch (error) {
+    console.error("Error fetching product list:", error);
+    res
+      .status(500)
+      .json({ error: "An error occurred while fetching the product list" });
+  }
+});
+
+app.use("/product", prod);
 
 module.exports = app;

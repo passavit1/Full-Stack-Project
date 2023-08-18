@@ -2,13 +2,16 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import UserList from "./userList";
+import { CreateProduct } from "../index";
 import { useNavigate } from "react-router-dom";
+import { Tab, Tabs } from "react-bootstrap";
 import jwt_decode from "jwt-decode";
 
 const AdminPanel = () => {
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
 
+  // Set token to local storage
   useEffect(() => {
     // Check if the user is authenticated (has a valid token)
     const token = localStorage.getItem("token");
@@ -30,7 +33,7 @@ const AdminPanel = () => {
 
   const fetchUsers = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/admin/users"); // Use the correct URL
+      const response = await axios.get("http://localhost:5000/admin/users");
       setUsers(response.data);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -40,7 +43,14 @@ const AdminPanel = () => {
   return (
     <div>
       <h1>Admin Panel</h1>
-      <UserList users={users} fetchUsers={fetchUsers} />
+      <Tabs defaultActiveKey="users">
+        <Tab eventKey="users" title="User List">
+          <UserList users={users} fetchUsers={fetchUsers} />
+        </Tab>
+        <Tab eventKey="products" title="Product Page">
+          <CreateProduct />
+        </Tab>
+      </Tabs>
     </div>
   );
 };
