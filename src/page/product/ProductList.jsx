@@ -1,27 +1,13 @@
 // ProductList.jsx
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import { Table, Button, Modal, Form } from "react-bootstrap";
 
-const ProductList = () => {
-  const [products, setProducts] = useState([]);
+const ProductList = ({ fetchProducts, products, setProducts }) => {
   const [selectedProduct, setSelectedProduct] = useState(null); // State to track the selected product for editing
   const [showEditModal, setShowEditModal] = useState(false);
   const [editedName, setEditedName] = useState("");
   const [editedPrice, setEditedPrice] = useState("");
-
-  useEffect(() => {
-    fetchProducts();
-  }, []);
-
-  const fetchProducts = async () => {
-    try {
-      const response = await axios.get("http://localhost:5000/product/list");
-      setProducts(response.data);
-    } catch (error) {
-      console.error(error);
-    }
-  };
 
   const handleEditClick = (product) => {
     setSelectedProduct(product);

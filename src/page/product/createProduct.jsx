@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 
-const CreateProduct = () => {
+const CreateProduct = ({ fetchProducts }) => {
   const [name, setName] = useState("");
   const [price, setPrice] = useState("");
   const [image, setImage] = useState("");
@@ -18,6 +18,7 @@ const CreateProduct = () => {
       setName("");
       setPrice("");
       setImage("");
+      fetchProducts();
     } catch (error) {
       console.error("Error creating product:", error);
     }

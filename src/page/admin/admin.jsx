@@ -1,13 +1,28 @@
 // AdminPanel.js
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import UserList from "./userList";
 import { CreateProduct, ProductList } from "../index";
 import { useNavigate } from "react-router-dom";
 import { Tab, Tabs } from "react-bootstrap";
 import jwt_decode from "jwt-decode";
+import axios from "axios";
 
 const AdminPanel = () => {
   const navigate = useNavigate();
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await axios.get("http://localhost:5000/product/list");
+      setProducts(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   // Set token to local storage
   useEffect(() => {
@@ -37,8 +52,12 @@ const AdminPanel = () => {
           <UserList />
         </Tab>
         <Tab eventKey="products" title="Product Page">
-          <CreateProduct />
-          <ProductList />
+          <CreateProduct fetchProducts={fetchProducts} />
+          <ProductList
+            fetchProducts={fetchProducts}
+            products={products}
+            setProducts={setProducts}
+          />
         </Tab>
       </Tabs>
     </div>
