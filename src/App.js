@@ -1,6 +1,14 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
-import { Login, Register, Test, AdminPanel, UserPage } from "./page/index";
+import { Container, Navbar, Nav } from "react-bootstrap";
+import {
+  Login,
+  Register,
+  Test,
+  AdminPanel,
+  UserPage,
+  HomePage,
+} from "./page/index";
 
 function App() {
   const [isLoginPage, setIsLoginPage] = useState(true);
@@ -11,29 +19,31 @@ function App() {
 
   return (
     <BrowserRouter>
-      <nav className="navbar navbar-expand-lg navbar-light bg-light">
-        <div className="container">
-          <Link to="/" className="navbar-brand">
-            My App
-          </Link>
-          <div>
-            <ul className="navbar-nav">
-              <li className="nav-item">
-                <Link
-                  to={isLoginPage ? "/register" : "/"}
-                  className="nav-link"
-                  onClick={togglePage}
-                >
-                  {isLoginPage ? "Register" : "Login"}
-                </Link>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-
+      <Navbar bg="dark" variant="dark" expand="lg">
+        <Container>
+          <Navbar.Brand>
+            <Link to="/" className="nav-link">
+              Hotel Name
+            </Link>
+          </Navbar.Brand>
+          <Navbar.Toggle aria-controls="navbar-nav" />
+          <Navbar.Collapse id="navbar-nav" className="justify-content-end">
+            <Nav className="ml-auto">
+              <Link
+                to={isLoginPage ? "/login" : "/register"}
+                className="nav-link"
+                onClick={togglePage}
+              >
+                {isLoginPage ? "Login" : "Register"}
+              </Link>
+              <Link className="nav-link">Test</Link>
+            </Nav>
+          </Navbar.Collapse>
+        </Container>
+      </Navbar>
       <Routes>
-        <Route path="/" element={<Login />} />
+        <Route path="/" element={<HomePage />} />
+        <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/user" element={<UserPage />} />
