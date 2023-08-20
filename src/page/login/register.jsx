@@ -96,7 +96,7 @@ const Register = () => {
   return (
     <Container className="mt-5">
       <Form onSubmit={handleRegister}>
-        <Form.Group controlId="username">
+        <Form.Group controlId="registerUsername">
           <Form.Label>Username</Form.Label>
           <Form.Control
             type="text"
@@ -133,7 +133,7 @@ const Register = () => {
           />
         </Form.Group>
 
-        <Form.Group controlId="password">
+        <Form.Group controlId="RegisterPassword">
           <Form.Label>Password</Form.Label>
           <Form.Control
             type="password"

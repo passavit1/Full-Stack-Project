@@ -4,7 +4,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: #dbd9d9 !important;
+  background-color: #eeeeee !important;
 }
 
 code {
@@ -20,4 +20,40 @@ code {
 *::after,
 *::before {
   box-sizing: border-box;
+}
+
+body::before {
+  content: "XS";
+  color: red;
+  font-size: 4vw;
+  font-weight: bold;
+  position: fixed;
+  top: 50vh;
+  right: 0;
+}
+
+@media (min-width: 576px) {
+  body::before {
+    content: "SM";
+  }
+}
+@media (min-width: 768px) {
+  body::before {
+    content: "MD";
+  }
+}
+@media (min-width: 992px) {
+  body::before {
+    content: "LG";
+  }
+}
+@media (min-width: 1200px) {
+  body::before {
+    content: "XL";
+  }
+}
+@media (min-width: 1400px) {
+  body::before {
+    content: "XXL";
+  }
 }

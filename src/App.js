@@ -1,14 +1,7 @@
 import React, { useState } from "react";
 import { BrowserRouter, Routes, Route, Link } from "react-router-dom";
 import { Container, Navbar, Nav } from "react-bootstrap";
-import {
-  Login,
-  Register,
-  Test,
-  AdminPanel,
-  UserPage,
-  HomePage,
-} from "./page/index";
+import { Test, AdminPanel, UserPage, HomePage, LoginPage } from "./page/index";
 
 function App() {
   const [isLoginPage, setIsLoginPage] = useState(true);
@@ -29,12 +22,8 @@ function App() {
           <Navbar.Toggle aria-controls="navbar-nav" />
           <Navbar.Collapse id="navbar-nav" className="justify-content-end">
             <Nav className="ml-auto">
-              <Link
-                to={isLoginPage ? "/login" : "/register"}
-                className="nav-link"
-                onClick={togglePage}
-              >
-                {isLoginPage ? "Login" : "Register"}
+              <Link to={"/login"} className="nav-link" onClick={togglePage}>
+                Login
               </Link>
               <Link className="nav-link">Test</Link>
             </Nav>
@@ -43,8 +32,7 @@ function App() {
       </Navbar>
       <Routes>
         <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/user" element={<UserPage />} />
         <Route path="/test" element={<Test />} />

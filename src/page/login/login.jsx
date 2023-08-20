@@ -1,8 +1,25 @@
 import React, { useState } from "react";
-import { Container, Form, Button } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import styled from "styled-components";
+
+const StyledContainer = styled.div`
+  background-color: #ffffff;
+  max-width: unset !important;
+
+  #loginUsername,
+  #loginPassword,
+  #loginButton {
+    width: 60%;
+    margin: 0 auto;
+
+    @media (max-width: 991px) {
+      width: 100%;
+    }
+  }
+`;
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -57,18 +74,20 @@ const Login = () => {
     setLoginMessage("");
     setLoginStatus(false);
 
-    if (e.target.id === "username") {
+    if (e.target.id === "loginUsername") {
       setUsername(e.target.value);
-    } else if (e.target.id === "password") {
+    } else if (e.target.id === "loginPassword") {
       setPassword(e.target.value);
     }
   };
 
   return (
-    <Container className="mt-5">
+    <StyledContainer className="container pt-3 ">
       <Form onSubmit={handleLogin}>
-        <Form.Group controlId="username">
-          <Form.Label>Username</Form.Label>
+        <Form.Group controlId="loginUsername" className="mb-3">
+          <Form.Label className="d-flex justify-content-center mb-2">
+            Username
+          </Form.Label>
           <Form.Control
             type="text"
             placeholder="Enter username"
@@ -77,8 +96,10 @@ const Login = () => {
           />
         </Form.Group>
 
-        <Form.Group controlId="password">
-          <Form.Label>Password</Form.Label>
+        <Form.Group controlId="loginPassword" className="mb-4">
+          <Form.Label className="d-flex justify-content-center mb-2">
+            Password
+          </Form.Label>
           <Form.Control
             type="password"
             placeholder="Enter password"
@@ -87,14 +108,22 @@ const Login = () => {
           />
         </Form.Group>
 
-        <Button variant="primary" type="submit">
-          Login
-        </Button>
+        <Form.Group className="d-flex flex-column justify-content-center">
+          <Button
+            variant="primary"
+            type="submit"
+            id="loginButton"
+            className="mb-4"
+          >
+            Login
+          </Button>
+        </Form.Group>
+
         {loginStatus !== undefined && (
           <p style={{ color: loginStatus ? "green" : "red" }}>{loginMessage}</p>
         )}
       </Form>
-    </Container>
+    </StyledContainer>
   );
 };
 
