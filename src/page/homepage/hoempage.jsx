@@ -1,10 +1,15 @@
 import React from "react";
-import { Container, Button, Row, Col } from "react-bootstrap";
+import { Container, Button } from "react-bootstrap";
 import styled from "styled-components";
 
-const HeroSection = styled.div`
-  background-image: url("hero-image.jpg");
+const StyledContainer = styled.div`
+  max-width: unset;
   background-size: cover;
+  background-image: url("https://a.cdn-hotels.com/gdcs/production104/d1292/5914682d-6db0-4c8c-8b0e-fb5c19d0f8df.jpg");
+  height: 90vh;
+`;
+
+const HeroSection = styled.div`
   text-align: center;
   padding: 100px 0;
   color: #fff;
@@ -23,7 +28,7 @@ const Footer = styled.footer`
 
 function HomePage() {
   return (
-    <div className="container">
+    <StyledContainer className="container">
       <HeroSection className="hero">
         <Container>
           <h1>Welcome to Our Luxurious Hotels</h1>
@@ -32,22 +37,12 @@ function HomePage() {
         </Container>
       </HeroSection>
 
-      <Container className="mt-5">
-        <Row>
-          <Col>
-            <h2>Discover Our Rooms</h2>
-            {/* Room listings go here */}
-          </Col>
-        </Row>
-        {/* Other sections */}
-      </Container>
-
-      <Footer className="mt-5 py-3">
-        <p>
+      <Footer className="fixed-bottom py-3 bg-dark text-light ">
+        <div>
           &copy; {new Date().getFullYear()} Your Hotel. All rights reserved.
-        </p>
+        </div>
       </Footer>
-    </div>
+    </StyledContainer>
   );
 }
 
