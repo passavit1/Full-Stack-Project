@@ -43,10 +43,10 @@ app.post("/register", async (req, res) => {
 
 // check user duplicate
 app.get("/check-username", async (req, res) => {
-  const { username } = req.query;
+  const { email } = req.query;
 
   try {
-    const existingUser = await User.findOne({ username });
+    const existingUser = await User.findOne({ email });
 
     if (existingUser) {
       res.json({ exists: true });
@@ -54,10 +54,8 @@ app.get("/check-username", async (req, res) => {
       res.json({ exists: false });
     }
   } catch (error) {
-    console.error("Error checking username:", error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while checking username" });
+    console.error("Error checking email:", error);
+    res.status(500).json({ error: "An error occurred while checking email" });
   }
 });
 

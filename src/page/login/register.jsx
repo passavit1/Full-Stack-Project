@@ -1,14 +1,25 @@
 import React, { useState } from "react";
-import { Container, Form, Button, Modal } from "react-bootstrap";
+import { Form, Button, Modal, InputGroup, Row, Col } from "react-bootstrap";
 import axios from "axios";
+import styled from "styled-components";
+
+const StyledContainer = styled.div`
+  background-color: #ffffff;
+  max-width: unset !important;
+
+  #submitButton {
+    width: 30%;
+  }
+`;
 
 const Register = () => {
   // collect value from register
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phone, setPhone] = useState("");
 
   // value for check function
   const [showModal, setShowModal] = useState(false);
@@ -18,21 +29,30 @@ const Register = () => {
   const [isUsernameTaken, setIsUsernameTaken] = useState(false);
   const [usernameAvailabilityMessage, setUsernameAvailabilityMessage] =
     useState("");
+  const [isEmailValid, setIsEmailValid] = useState(false);
 
   // Function to reset all form fields
   const resetForm = () => {
-    setUsername("");
+    setEmail("");
     setPassword("");
     setConfirmPassword("");
     setName("");
-    setEmail("");
+    setLastName("");
+    setPhone("");
   };
 
   // function check and send to backend
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    if (!username || !name || !email || !password || !confirmPassword) {
+    if (
+      !name ||
+      !lastName ||
+      !email ||
+      !password ||
+      !confirmPassword ||
+      !phone
+    ) {
       setModalMessage("Please fill in all fields");
       setShowModal(true);
       return;
@@ -48,10 +68,11 @@ const Register = () => {
     setPasswordMatch(true);
 
     const userData = {
-      username: username,
-      name: name,
-      password: password,
       email: email,
+      firstName: name,
+      lastName: lastName,
+      password: password,
+      phone: phone,
     };
 
     // send data to backend
@@ -75,91 +96,145 @@ const Register = () => {
   };
 
   // Check user name is registered
-  const handleUsernameCheck = async () => {
+  const handleEmailCheck = async () => {
     try {
       const response = await axios.get(
-        `http://localhost:5000/check-username?username=${username}`
+        `http://localhost:5000/check-username?email=${email}`
       );
 
       if (response.data.exists) {
         setIsUsernameTaken(true);
-        setUsernameAvailabilityMessage("Username is already taken");
+        setUsernameAvailabilityMessage("Email is already taken");
       } else {
         setIsUsernameTaken(false);
-        setUsernameAvailabilityMessage("Username is available");
+        setUsernameAvailabilityMessage("Email is available");
       }
     } catch (error) {
       console.error("An error occurred:", error);
     }
   };
 
+  const validateEmailFormat = (email) => {
+    // Regular expression for basic email format validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailPattern.test(email);
+  };
+
   return (
-    <Container className="mt-5">
+    <StyledContainer className="container p-3">
+      <h5 className="d-flex justify-content-center mb-3">
+        SIGN UP INFORMATION
+      </h5>
       <Form onSubmit={handleRegister}>
-        <Form.Group controlId="registerUsername">
-          <Form.Label>Username</Form.Label>
+        <Form.Group className="mb-3 ">
+          <InputGroup>
+            <Form.Floating>
+              <Form.Control
+                id="floatingInputCustom"
+                type="email"
+                placeholder="name@example.com"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setUsernameAvailabilityMessage("");
+                  setIsEmailValid(validateEmailFormat(e.target.value));
+                }}
+              />
+              <label htmlFor="floatingInputCustom">Email address</label>
+            </Form.Floating>
+            <Button
+              variant="outline-secondary"
+              id="button-addon2"
+              onClick={handleEmailCheck}
+              disabled={!isEmailValid}
+            >
+              Check Email
+            </Button>
+          </InputGroup>
+          <p style={{ color: isUsernameTaken ? "red" : "green" }}>
+            {usernameAvailabilityMessage}
+          </p>
+          {!isUsernameTaken && email && !validateEmailFormat(email) && (
+            <p style={{ color: "red" }}>Please enter a valid email address</p>
+          )}
+        </Form.Group>
+
+        <Row className="mb-3">
+          <Col md={6} className="mb-2 mb-md-auto">
+            <Form.Group controlId="RegisterPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Enter Password "
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+              />
+            </Form.Group>
+          </Col>
+
+          <Col>
+            <Form.Group controlId="confirmPassword">
+              <Form.Label>Confirm Password</Form.Label>
+              <Form.Control
+                type="password"
+                placeholder="Confirm Password"
+                value={confirmPassword}
+                onChange={(e) => {
+                  setConfirmPassword(e.target.value);
+                  setPasswordMatch(e.target.value === password);
+                }}
+                style={{ borderColor: passwordMatch ? "" : "red" }}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+
+        <Row className="mb-3">
+          <Col md={6} className="mb-2 mb-md-auto">
+            <Form.Group controlId="RegisterFirstName">
+              <Form.Label>First Name *</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Form.Group>
+          </Col>
+          <Col>
+            <Form.Group as={Col} controlId="RegisterLastName">
+              <Form.Label>Last Name *</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter your last name"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+              />
+            </Form.Group>
+          </Col>
+        </Row>
+
+        <Form.Group controlId="Phone">
+          <Form.Label>Phone *</Form.Label>
           <Form.Control
             type="text"
-            placeholder="Enter username"
-            value={username}
-            onChange={(e) => {
-              setUsername(e.target.value);
-              setUsernameAvailabilityMessage("");
-            }}
-          />
-        </Form.Group>
-        <Button variant="primary" onClick={handleUsernameCheck}>
-          Check Username Availability
-        </Button>
-        <p style={{ color: isUsernameTaken ? "red" : "green" }}>
-          {usernameAvailabilityMessage}
-        </p>
-        <Form.Group controlId="name">
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            type="text"
-            placeholder="Enter your name"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-          />
-        </Form.Group>
-        <Form.Group controlId="email">
-          <Form.Label>email</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Enter your Phone Number"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+            className="mb-3"
           />
         </Form.Group>
 
-        <Form.Group controlId="RegisterPassword">
-          <Form.Label>Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
+        <Form.Group className="d-flex justify-content-center">
+          <Button
+            variant="secondary "
+            type="submit"
+            disabled={!isEmailValid}
+            id="submitButton"
+          >
+            Register
+          </Button>
         </Form.Group>
-
-        <Form.Group controlId="confirmPassword">
-          <Form.Label>Confirm Password</Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Confirm password"
-            value={confirmPassword}
-            onChange={(e) => {
-              setConfirmPassword(e.target.value);
-              setPasswordMatch(e.target.value === password);
-            }}
-            style={{ borderColor: passwordMatch ? "" : "red" }}
-          />
-        </Form.Group>
-
-        <Button variant="primary" type="submit">
-          Register
-        </Button>
       </Form>
       <Modal
         show={showModal}
@@ -198,7 +273,7 @@ const Register = () => {
           </Button>
         </Modal.Footer>
       </Modal>
-    </Container>
+    </StyledContainer>
   );
 };
 
